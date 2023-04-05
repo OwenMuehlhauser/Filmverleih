@@ -29,8 +29,8 @@ class App {
             },
             //// TODO: Eigene Routing-Regeln hier in der Mitte einfügen ////
             {
-                url: ".*",
-                show: () => this._gotoList()
+                url: "^/movie/(.*)$",
+                show: matches => this._gotoMovie(matches[1])
             },
         ]);
 
@@ -69,6 +69,22 @@ class App {
             let page = new PageList(this);
             await page.init();
             this._showPage(page, "list");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+    /**
+     * Übersichtsseite anzeigen. Wird vom Single Page Router aufgerufen.
+     */
+    async _gotoMovie(id) {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageAddMovie} = await import("./page-addMovie/page-addMovie.js");
+
+            let page = new PageAddMovie(this, id);
+            await page.init();
+            this._showPage(page, "movie");
         } catch (ex) {
             this.showException(ex);
         }
