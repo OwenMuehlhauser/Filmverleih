@@ -27,11 +27,18 @@ class App {
                 url: "^/$",
                 show: () => this._gotoList()
             },
-            //// TODO: Eigene Routing-Regeln hier in der Mitte einfügen ////
+            {
+                url: "^/new/$",
+                show: () => this._gotoNew()
+            },
             {
                 url: "^/movie/(.*)$",
                 show: matches => this._gotoMovie(matches[1])
             },
+            {
+                url: ".*",
+                show: () => this._gotoList()
+            }
         ]);
 
         // Fenstertitel merken, um später den Name der aktuellen Seite anzuhängen
@@ -75,7 +82,27 @@ class App {
     }
 
     /**
-     * Übersichtsseite anzeigen. Wird vom Single Page Router aufgerufen.
+     * Seite zum Anlegen einer neuen Adresse anzeigen.  Wird vom Single Page
+     * Router aufgerufen.
+     */
+    async _gotoNew() {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageAddMovie} = await import("./page-addMovie/page-addMovie.js");
+
+            let page = new PageAddMovie(this);
+            await page.init();
+            this._showPage(page, "new");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+    /**
+     * Seite zum Bearbeiten einer Adresse anzeigen.  Wird vom Single Page
+     * Router aufgerufen.
+     *
+     * @param {Number} id ID der zu bearbeitenden Adresse
      */
     async _gotoMovie(id) {
         try {

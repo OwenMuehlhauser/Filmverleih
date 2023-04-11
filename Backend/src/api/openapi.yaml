@@ -1,14 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Adressbuch
+  title: Filmverleih
   description: "Die Adressbuch-App nutzt einen simplen REST-Webservices zur Kommunikation\
     \ mit dem Backend. Dieser ermöglicht die üblichen CRUD-Operationen zur Suche,\
     \ Anzeige, Bearbeitung und Löschung von Adressen, wobei jede Adresse aus einem\
     \ Vornamen, Nachnamen, Telefonnummer und eine E-Mailadresse besteht."
   contact:
-    name: Dennis Schulmeister-Zimolong
-    url: https://www.wpvs.de
-    email: dhbw@windows3.de
+    name: wadDW
+    url: dAWDAS
+    email: muster.mann@gmx.de
   license:
     name: CC-BY-4.0
     url: https://creativecommons.org/licenses/by/4.0/deed.de
@@ -37,42 +37,42 @@ paths:
                   $ref: '#/components/schemas/HATEOAS_Collection'
                 x-content-type: application/json
 
-  /address:
+  /movie:
     get:
       tags:
       - Adresse
-      summary: Adressen suchen
-      description: Suche nach Adressen. Gibt eine Liste aller Adressen passend zu
+      summary: Film suchen
+      description: Suche nach Filme. Gibt eine Liste aller Filme passend zu
         den übergebenen Suchkriterien zurück.
       operationId: search-address
       parameters:
-      - name: first_name
+      - name: movieTitle
         in: query
-        description: Gesuchter Vorname
+        description: Gesuchter Filmname
         required: false
         style: form
         explode: true
         schema:
           type: string
-      - name: last_name
+      - name: reggiseur
         in: query
-        description: Gesuchter Nachname
+        description: Gesuchter Reggiseur
         required: false
         style: form
         explode: true
         schema:
           type: string
-      - name: phone
+      - name: releaseDate
         in: query
-        description: Gesuchte Telefonnummer
+        description: Gesuchtes Veröffentlichungsdatum
         required: false
         style: form
         explode: true
         schema:
           type: string
-      - name: email
+      - name: playtime
         in: query
-        description: Gesuchte E-Mailadresse
+        description: Gesuchte Spielzeit
         required: false
         style: form
         explode: true
@@ -86,21 +86,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Address'
+                  $ref: '#/components/schemas/Movie'
                 x-content-type: application/json
     post:
       tags:
       - Adresse
-      summary: Adresse anlegen
-      description: "Neue Adresse anlegen. Speichert die übergebene Adresse in der\
+      summary: Film anlegen
+      description: "Neuen Film anlegen. Speichert den übergebenen Film in der\
         \ Datenbank. Der Wert des Feldes \"_id\" wird dabei ignoriert, da in jedem Fall\
-        \ eine neue Adresse mit neuer ID angelegt wird."
-      operationId: create-address
+        \ einen neuen Film mit neuer ID angelegt wird."
+      operationId: create-movie
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Movie'
       responses:
         "201":
           description: Created
@@ -111,15 +111,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Movie'
 
-  /address/{id}:
+  /movie/{id}:
     get:
       tags:
       - Adresse
-      summary: Adresse lesen
-      description: Liest eine einzelne Adresse vom Server.
-      operationId: get-address
+      summary: Film lesen
+      description: Liest einen einzelnen Film vom Server.
+      operationId: get-movie
       parameters:
       - name: id
         in: path
@@ -134,17 +134,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Movie'
         "404":
           description: Not Found
     put:
       tags:
-      - Adresse überschreiben
+      - Film überschreiben
       summary: ""
-      description: "Überschreibt eine vorhandene Adresse auf dem Server. Bis auf die\
+      description: "Überschreibt einen vorhandenen Film auf dem Server. Bis auf die\
         \ ID können alle Felder geändert werden. Der Versuch, die ID zu ändern, wird\
         \ vom Server stillschweigend ignoriert."
-      operationId: update-address
+      operationId: update-movie
       parameters:
       - name: id
         in: path
@@ -157,24 +157,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Movie'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Movie'
         "404":
           description: Not Found
     patch:
       tags:
       - Einzelne Felder ändern
       summary: Einzelne Adressfelder ändern
-      description: "Ändert einzelne Felder einer vorhandenen Adresse. Zulässig sind\
+      description: "Ändert einzelne Felder eines vorhandenen Films. Zulässig sind\
         \ alle Felder bis auf die ID, da diese nachträglich nicht mehr verändert werden\
         \ darf."
-      operationId: patch-address
+      operationId: patch-movie
       parameters:
       - name: id
         in: path
@@ -187,22 +187,22 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/Movie'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/Movie'
         "404":
           description: Not Found
     delete:
       tags:
       - Adresse
-      summary: Adresse löschen
-      description: Löscht eine Adresse auf dem Server.
-      operationId: delete-address
+      summary: Film löschen
+      description: Löscht einen Film auf dem Server.
+      operationId: delete-movie
       parameters:
       - name: id
         in: path
@@ -256,30 +256,29 @@ components:
           items:
             type: string
 
-    Address:
-      title: Adresse
+    Movie:
+      title: Film
       type: object
       properties:
         _links:
           $ref: '#/components/schemas/HATEOAS_Resource'
         _id:
           type: string
-        first_name:
+        movieTitle:
           type: string
-        last_name:
+        reggsieur:
           type: string
-        phone:
+        releaseDate:
           type: string
-        email:
+        playtime:
           type: string
           pattern: "(.*@.*\\..*)?"
       required:
-        - first_name
-        - last_name
+        - movieTitle
       example:
-        _id: "621ff9a936997df5baba746e"
-        first_name: "Fox"
-        last_name: "Mulder"
-        email: "mulder@xfiles.com"
-        phone: "+49 721 553181"
+        _id: "82438fh3w32234d"
+        movieTitle: "Avatar 2"
+        reggsieur: "James Camerom"
+        releaseDate: "14. Dezember 2022"
+        playtime: "3:10"
   securitySchemes: {}
