@@ -4,9 +4,10 @@ import restify from "restify";
 import OpenApiEnforcer from "openapi-enforcer";
 import OpenApiEnforcerMiddleware from "@dschulmeis/restify-openapi-enforcer-middleware";
 
-//// TODO: Weitere Controller-Klassen importieren ////
+
 import DatabaseFactory from "./database.js";
 import RootController from "./controller/root.controller.js";
+import AddMovieController from "./controller/addMovie.controller.js";
 
 // Verzeichnisnamen der Quellcodedatei ermitteln
 import path from "path";
@@ -90,8 +91,8 @@ const openApiEnforcer = await OpenApiEnforcer(openApiFile, {
 server.use(OpenApiEnforcerMiddleware(openApiEnforcer));
 
 // HTTP-Controller registrieren
-//// TODO: Weitere Controller-Klassen hinzufügen ////
-new RootController(server, "/");
+new RootController(server, "/", openApiFile);
+new AddMovieController(server, "/movie");
 
 // Server tatsächlich starten
 server.listen(config.port, config.host, function() {
