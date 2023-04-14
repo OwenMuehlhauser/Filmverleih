@@ -38,7 +38,20 @@ class App {
             {
                 url: ".*",
                 show: () => this._gotoList()
-            }
+            },
+            {
+                url: "^/ratingList/$",
+                show: () => this._gotoRatingList()
+            },
+            {
+                url: "^/newRating/$",
+                show: () => this._gotoNewRating()
+            },
+            {
+                url: "^/editRating/(.*)$",
+                show: matches => this._gotoEditRating(matches[1])
+            },
+            
         ]);
 
         // Fenstertitel merken, um später den Name der aktuellen Seite anzuhängen
@@ -112,6 +125,59 @@ class App {
             let page = new PageEditMovie(this, id);
             await page.init();
             this._showPage(page, "edit");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+
+    /**
+     * Übersichtsseite der verschiedenen Bewertungen anzeigen. Wird vom Single Page Router aufgerufen.
+     */
+    async _gotoRatingList() {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageRatingList} = await import("./page-ratingList/page-ratingList.js");
+
+            let page = new PageRatingList(this);
+            await page.init();
+            this._showPage(page, "ratingList");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+    /**
+     * Seite zum Anlegen einer neuen Bewertung anzeigen.  Wird vom Single Page
+     * Router aufgerufen.
+     */
+    async _gotoNewRating() {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageEditRate} = await import("./page-editRatingList/page-editRatingList.js");
+
+            let page = new PageEditRate(this);
+            await page.init();
+            this._showPage(page, "rate");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+    /**
+     * Seite zum Bearbeiten einer Bewertung anzeigen.  Wird vom Single Page
+     * Router aufgerufen.
+     *
+     * @param {Number} id ID der zu bearbeitenden Bewertung
+     */
+    async _gotoEditRating(id) {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageEditRate} = await import("./page-editRatingList/page-editRatingList.js");
+
+            let page = new PageEditRate(this, id);
+            await page.init();
+            this._showPage(page, "editRate");
         } catch (ex) {
             this.showException(ex);
         }

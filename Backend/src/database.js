@@ -33,10 +33,11 @@ class DatabaseFactory {
     async _createDemoData() {
         //// TODO: Methode anpassen, um zur eigenen App passende Demodaten anzulegen ////
         //// oder die Methode ggf. einfach löschen und ihren Aufruf oben entfernen.  ////
-        let examples = this.database.collection("movies");
+        let movies = this.database.collection("movies");
+        let ratings = this.database.collection("ratings");
 
-        if (await examples.estimatedDocumentCount() === 0) {
-            examples.insertMany([
+        if (await movies.estimatedDocumentCount() === 0) {
+            movies.insertMany([
                 {
                     movieTitle: "Avatar 2",
                     reggiseur: "James Cameron",
@@ -51,7 +52,17 @@ class DatabaseFactory {
                 },
             ]);
         }
+
+        if (await ratings.estimatedDocumentCount() === 0) {
+            ratings.insertMany([
+                {
+                    movieTitle_rate: "Avatar 2",
+                    rate: "Der Film ist echt gut",
+                },
+            ]);
+        }
     }
+
 }
 
 export default new DatabaseFactory();

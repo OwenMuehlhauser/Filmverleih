@@ -35,6 +35,11 @@ export default class RootController {
                 _name: "movie",
                 query: {url: "/movie", method: "GET", query_params: ["search", "movieTitle", "reggiseur", "releaseDate", "playtime"]},
                 create: {url: "/movie", method: "POST"},
+            },
+            {
+                _name: "rating",
+                query: {url: "/rating", method: "GET", query_params: ["search", "movieTitle_rate", "rate"]},
+                create: {url: "/rating", method: "POST"},
             }
         ]);
 
