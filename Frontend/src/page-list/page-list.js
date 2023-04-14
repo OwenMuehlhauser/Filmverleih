@@ -60,7 +60,7 @@ export default class PageList extends Page {
 
             html = html.replace("$ID$", dataset._id);
             html = html.replace("$MOVIETITLE$", dataset.movieTitle);
-            html = html.replace("$REGGISEUR$", dataset.reggiseur);
+            html = html.replace("$REGGISEUR$", dataset.reggiseur)
             html = html.replace("$RELEASEDATE$", dataset.releaseDate);
             html = html.replace("$PLAYTIME$", dataset.playtime);
 
@@ -72,7 +72,7 @@ export default class PageList extends Page {
             olElement.appendChild(liElement);
 
             // Event Handler registrieren
-            liElement.querySelector(".action.edit").addEventListener("click", () => location.hash = `#/movie/${dataset._id}`);
+            liElement.querySelector(".action.edit").addEventListener("click", () => location.hash = `#/edit/${dataset._id}`);
             liElement.querySelector(".action.delete").addEventListener("click", () => this._askDelete(dataset._id));
         }
     }

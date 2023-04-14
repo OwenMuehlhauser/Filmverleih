@@ -1,13 +1,13 @@
 "use strict";
 
 import Page from "../page.js";
-import HtmlTemplate from "./page-addMovie.html";
+import HtmlTemplate from "./page-edit.html";
 
 /**
  * Klasse PageEdit: Stellt die Seite zum Anlegen oder Bearbeiten einer Adresse
  * zur Verfügung.
  */
-export default class PageAddMovie extends Page {
+export default class PageEditMovie extends Page {
     /**
      * Konstruktor.
      *
@@ -29,7 +29,7 @@ export default class PageAddMovie extends Page {
 
         // Eingabefelder
         this._movieTitleInput = null;
-        this._reggiseurInput  = null;
+        this._reggiseur = null;
         this._releaseDateInput     = null;
         this._playtimeInput     = null;
     }
@@ -77,7 +77,7 @@ export default class PageAddMovie extends Page {
 
         // Eingabefelder zur späteren Verwendung merken
         this._movieTitleInput = this._mainElement.querySelector("input.movieTitle");
-        this._reggiseurInput  = this._mainElement.querySelector("input.reggiseur");
+        this._reggiseur = this.mainElement.querySelector("input.reggiseur");
         this._releaseDateInput     = this._mainElement.querySelector("input.releaseDate");
         this._playtimeInput     = this._mainElement.querySelector("input.playtime");
     }
@@ -88,17 +88,16 @@ export default class PageAddMovie extends Page {
      */
     async _saveAndExit() {
         // Eingegebene Werte prüfen
-        this._dataset._id        = this._editId;
-        this._dataset.movieTitle = this._movieTitleInput.value.trim();
-        this._dataset.reggiseur  = this._reggiseurInput.value.trim();
-        this._dataset.releaseDate      = this._releaseDateInput.value.trim();
+        this._dataset._id           = this._editId;
+        this._dataset.movieTitle    = this._movieTitleInput.value.trim();
+        this._dataset.reggiseur     = this._reggiseur.value.trim();
+        this._dataset.releaseDate   = this._releaseDateInput.value.trim();
         this._dataset.playtime      = this._playtimeInput.value.trim();
 
         if (!this._dataset.movieTitle) {
             alert("Geben Sie erst ein Filmtitel ein.");
             return;
         }
-
         // Datensatz speichern
         try {
             if (this._editId) {

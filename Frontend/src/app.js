@@ -32,8 +32,8 @@ class App {
                 show: () => this._gotoNew()
             },
             {
-                url: "^/movie/(.*)$",
-                show: matches => this._gotoMovie(matches[1])
+                url: "^/edit/(.*)$",
+                show: matches => this._gotoEdit(matches[1])
             },
             {
                 url: ".*",
@@ -88,9 +88,9 @@ class App {
     async _gotoNew() {
         try {
             // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
-            let {default: PageAddMovie} = await import("./page-addMovie/page-addMovie.js");
+            let {default: PageEditMovie} = await import("./page-edit/page-edit.js");
 
-            let page = new PageAddMovie(this);
+            let page = new PageEditMovie(this);
             await page.init();
             this._showPage(page, "new");
         } catch (ex) {
@@ -104,14 +104,14 @@ class App {
      *
      * @param {Number} id ID der zu bearbeitenden Adresse
      */
-    async _gotoMovie(id) {
+    async _gotoEdit(id) {
         try {
             // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
-            let {default: PageAddMovie} = await import("./page-addMovie/page-addMovie.js");
+            let {default: PageEditMovie} = await import("./page-edit/page-edit.js");
 
-            let page = new PageAddMovie(this, id);
+            let page = new PageEditMovie(this, id);
             await page.init();
-            this._showPage(page, "movie");
+            this._showPage(page, "edit");
         } catch (ex) {
             this.showException(ex);
         }

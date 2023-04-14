@@ -29,7 +29,6 @@ export default class AddMovieService {
         let cursor = this._movies.find(query, {
             sort: {
                 movieTitle: 1,
-                reggiseur: 1,
             }
         });
 
