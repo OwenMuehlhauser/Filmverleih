@@ -8,12 +8,12 @@ import {ObjectId} from "mongodb";
  * eigentliche Anwendungslogik losgelöst vom technischen Übertragungsweg.
  * Die Adressen werden der Einfachheit halber in einer MongoDB abgelegt.
  */
-export default class AddMovieService {
+export default class AddReservation {
     /**
      * Konstruktor.
      */
     constructor() {
-        this._movies = DatabaseFactory.database.collection("movies");
+        this._reservations = DatabaseFactory.database.collection("reservations");
     }
 
     /**
@@ -26,9 +26,9 @@ export default class AddMovieService {
      * @return {Promise} Liste der gefundenen Adressen
      */
     async search(query) {
-        let cursor = this._movies.find(query, {
+        let cursor = this._reservations.find(query, {
             sort: {
-                movieTitle: 1,
+                movieTitle_reserv: 1,
             }
         });
 
@@ -36,23 +36,24 @@ export default class AddMovieService {
     }
 
     /**
-     * Speichern einer neuen Adresse.
+     * Speichern einer neuen Reservierung.
      *
-     * @param {Object} movie Zu speichernde Adressdaten
-     * @return {Promise} Gespeicherte Adressdaten
+     * @param {Object} reverv Zu speichernde Reservierugnsdaten
+     * @return {Promise} Gespeicherte Reservierungsdaten
      */
-    async create(movie) {
-        movie = movie || {};
+    async create(reserv) {
+        reserv = reserv || {};
 
-        let newMovie = {
-            movieTitle: movie.movieTitle || "",
-            reggiseur:  movie.reggiseur  || "",
-            releaseDate:      movie.releaseDate      || "",
-            playtime:      movie.playtime      || "",
+        let newReserv = {
+            firstName:          reserv.firstName            || "",
+            secondName:         reserv.secondName           || "",
+            email:              reserv.email                || "",
+            movieTitle_reserv:  reserv.movieTitle_reserv    || "",
+            date:               reserv.date                 || "",
         };
 
-        let result = await this._movies.insertOne(newMovie);
-        return await this._movies.findOne({_id: result.insertedId});
+        let result = await this._reservations.insertOne(newReserv);
+        return await this._reservations.findOne({_id: result.insertedId});
     }
 
     /**
@@ -62,7 +63,7 @@ export default class AddMovieService {
      * @return {Promise} Gefundene Adressdaten
      */
     async read(id) {
-        let result = await this._movies.findOne({_id: new ObjectId(id)});
+        let result = await this._reservations.findOne({_id: new ObjectId(id)});
         return result;
     }
 
@@ -74,21 +75,22 @@ export default class AddMovieService {
      * @param {[type]} address Zu speichernde Adressdaten
      * @return {Promise} Gespeicherte Adressdaten oder undefined
      */
-    async update(id, movie) {
-        let oldMovie = await this._movies.findOne({_id: new ObjectId(id)});
-        if (!oldMovie) return;
+    async update(id, reserv) {
+        let oldReserv = await this._reservations.findOne({_id: new ObjectId(id)});
+        if (!oldReserv) return;
 
         let updateDoc = {
             $set: {},
         }
 
-        if (movie.movieTitle) updateDoc.$set.movieTitle = movie.movieTitle;
-        if (movie.reggiseur)  updateDoc.$set.reggiseur  = movie.reggiseur;
-        if (movie.releaseDate)      updateDoc.$set.releaseDate      = movie.releaseDate;
-        if (movie.playtime)      updateDoc.$set.playtime      = movie.playtime;
+        if (reserv.firstName)           updateDoc.$set.firstName            = reserv.movieTitle;
+        if (reserv.secondName)          updateDoc.$set.secondName           = reserv.reggiseur;
+        if (reserv.email)               updateDoc.$set.email                = reserv.releaseDate;
+        if (reserv.movieTitle_reserv)   updateDoc.$set.movieTitle_reserv    = reserv.playtime;
+        if (reserv.date)                updateDoc.$set.date                 = reserv.date;
 
-        await this._movies.updateOne({_id: new ObjectId(id)}, updateDoc);
-        return this._movies.findOne({_id: new ObjectId(id)});
+        await this._reservations.updateOne({_id: new ObjectId(id)}, updateDoc);
+        return this._reservations.findOne({_id: new ObjectId(id)});
     }
 
     /**
@@ -98,7 +100,7 @@ export default class AddMovieService {
      * @return {Promise} Anzahl der gelöschten Datensätze
      */
     async delete(id) {
-        let result = await this._movies.deleteOne({_id: new ObjectId(id)});
+        let result = await this._reservations.deleteOne({_id: new ObjectId(id)});
         return result.deletedCount;
     }
 }

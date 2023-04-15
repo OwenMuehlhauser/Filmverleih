@@ -35,6 +35,7 @@ class DatabaseFactory {
         //// oder die Methode ggf. einfach löschen und ihren Aufruf oben entfernen.  ////
         let movies = this.database.collection("movies");
         let ratings = this.database.collection("ratings");
+        let reservations = this.database.collection("reservations");
 
         if (await movies.estimatedDocumentCount() === 0) {
             movies.insertMany([
@@ -56,9 +57,25 @@ class DatabaseFactory {
         if (await ratings.estimatedDocumentCount() === 0) {
             ratings.insertMany([
                 {
-                    movieTitle_rate: "Avatar 2",
+                    movieTitleRate: "Avatar 2",
                     rate: "Der Film ist echt gut",
                 },
+                {
+                    movieTitleRate: "John Wick: Kapitel 4",
+                    rate: "Sehr spannend und würde den Film nochmal schauen",
+                }
+            ]);
+        }
+
+        if (await reservations.estimatedDocumentCount() === 0) {
+            reservations.insertMany([
+                {
+                    firstName: "Hans",
+                    secondName: "Peter",
+                    email: "hans.peter.de",
+                    movieTitle_reserv: "Avatar 2",
+                    date: "16.04.2023",
+                }
             ]);
         }
     }

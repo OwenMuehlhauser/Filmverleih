@@ -9,6 +9,7 @@ import DatabaseFactory from "./database.js";
 import RootController from "./controller/root.controller.js";
 import AddMovieController from "./controller/addMovie.controller.js";
 import AddRatingController from "./controller/addRating.controller.js";
+import AddReservationController from "./controller/addReservation.controller.js";
 
 // Verzeichnisnamen der Quellcodedatei ermitteln
 import path from "path";
@@ -95,6 +96,7 @@ server.use(OpenApiEnforcerMiddleware(openApiEnforcer));
 new RootController(server, "/", openApiFile);
 new AddMovieController(server, "/movie");
 new AddRatingController(server, "/rating");
+new AddReservationController(server, "/reservation");
 
 
 // Server tatsächlich starten

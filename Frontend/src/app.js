@@ -36,10 +36,6 @@ class App {
                 show: matches => this._gotoEdit(matches[1])
             },
             {
-                url: ".*",
-                show: () => this._gotoList()
-            },
-            {
                 url: "^/ratingList/$",
                 show: () => this._gotoRatingList()
             },
@@ -51,7 +47,11 @@ class App {
                 url: "^/editRating/(.*)$",
                 show: matches => this._gotoEditRating(matches[1])
             },
-            
+            // Es müssen noch die Sachen für reservation ergänzt werden
+            {
+                url: ".*",
+                show: () => this._gotoList()
+            }
         ]);
 
         // Fenstertitel merken, um später den Name der aktuellen Seite anzuhängen
@@ -95,7 +95,7 @@ class App {
     }
 
     /**
-     * Seite zum Anlegen einer neuen Adresse anzeigen.  Wird vom Single Page
+     * Seite zum Anlegen eines neuen Filmes anzeigen.  Wird vom Single Page
      * Router aufgerufen.
      */
     async _gotoNew() {
@@ -112,10 +112,10 @@ class App {
     }
 
     /**
-     * Seite zum Bearbeiten einer Adresse anzeigen.  Wird vom Single Page
+     * Seite zum Bearbeiten eines Filmes anzeigen.  Wird vom Single Page
      * Router aufgerufen.
      *
-     * @param {Number} id ID der zu bearbeitenden Adresse
+     * @param {Number} id ID des zu bearbeitenden Films
      */
     async _gotoEdit(id) {
         try {

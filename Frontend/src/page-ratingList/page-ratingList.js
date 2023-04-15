@@ -36,7 +36,7 @@ export default class PageRatingList extends Page {
     async init() {
         // HTML-Inhalt nachladen
         await super.init();
-        this._title = "Bewertungen";
+        this._title = "Übersicht Bewertungen";
 
         // Platzhalter anzeigen, wenn noch keine Daten vorhanden sind
         let data = await this._app.backend.fetch("GET", "/rating");
@@ -59,7 +59,7 @@ export default class PageRatingList extends Page {
             let html = templateHtml;
 
             html = html.replace("$ID$", dataset._id);
-            html = html.replace("$MOVIETITLE_RATE$", dataset.movieTitle_rate);
+            html = html.replace("$MOVIETITLERATE$", dataset.movieTitleRate);
             html = html.replace("$RATE$", dataset.rate)
 
             // Element in die Liste einfügen

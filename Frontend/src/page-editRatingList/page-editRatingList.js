@@ -21,12 +21,12 @@ export default class PageEditRate extends Page {
         this._editId = editId;
 
         this._dataset = {
-            movieTitle_rate: "",
+            movieTitleRate: "",
             rate: "",
         };
 
         // Eingabefelder
-        this._movieTitle_rateInput = null;
+        this._movieTitleRateInput = null;
         this._rateInput = null;
     }
 
@@ -53,7 +53,7 @@ export default class PageEditRate extends Page {
         if (this._editId) {
             this._url = `/rating/${this._editId}`;
             this._dataset = await this._app.backend.fetch("GET", this._url);
-            this._title = `${this._dataset.movieTitle}`;
+            this._title = `${this._dataset.movieTitleRate}`;
         } else {
             this._url = `/rating`;
             this._title = "Bewertung hinzufügen";
@@ -61,7 +61,7 @@ export default class PageEditRate extends Page {
 
         // Platzhalter im HTML-Code ersetzen
         let html = this._mainElement.innerHTML;
-        html = html.replace("$MOVIETITLE_RATE$", this._dataset.movieTitle_rate);
+        html = html.replace("$MOVIETITLERATE$", this._dataset.movieTitleRate);
         html = html.replace("$RATE$", this._dataset.rate);
         this._mainElement.innerHTML = html;
 
@@ -70,8 +70,8 @@ export default class PageEditRate extends Page {
         saveButton.addEventListener("click", () => this._saveAndExit());
 
         // Eingabefelder zur späteren Verwendung merken
-        this._movieTitle_rateInput = this._mainElement.querySelector("input.movieTitle_rate");
-        this._rate = this.mainElement.querySelector("input.rate");
+        this._movieTitleRateInput = this._mainElement.querySelector("input.movieTitleRate");
+        this._rateInput = this.mainElement.querySelector("input.rate");
     }
 
     /**
@@ -81,10 +81,10 @@ export default class PageEditRate extends Page {
     async _saveAndExit() {
         // Eingegebene Werte prüfen
         this._dataset._id           = this._editId;
-        this._dataset.movieTitle_rate    = this._movieTitle_rateInput.value.trim();
+        this._dataset.movieTitleRate    = this._movieTitleRateInput.value.trim();
         this._dataset.rate          = this._rateInput.value.trim();
 
-        if (!this._dataset.movieTitle_rate) {
+        if (!this._dataset.movieTitleRate) {
             alert("Geben Sie erst ein Filmtitel ein.");
             return;
         }

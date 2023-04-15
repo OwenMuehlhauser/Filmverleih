@@ -28,7 +28,7 @@ export default class AddRatingService {
     async search(query) {
         let cursor = this._ratings.find(query, {
             sort: {
-                movieTitle_rate: 1,
+                movieTitleRate: 1,
             }
         });
 
@@ -45,7 +45,7 @@ export default class AddRatingService {
         rating = rating || {};
 
         let newRating = {
-            movieTitle_rate: rating.movieTitle_rate || "",
+            movieTitleRate: rating.movieTitleRate || "",
             rate:  rating.rate  || "",
         };
 
@@ -72,16 +72,16 @@ export default class AddRatingService {
      * @param {[type]} rate Zu speichernde Adressdaten
      * @return {Promise} Gespeicherte Adressdaten oder undefined
      */
-    async update(id, rate) {
-        let oldRate = await this._ratings.findOne({_id: new ObjectId(id)});
-        if (!oldRate) return;
+    async update(id, rating) {
+        let oldRating = await this._ratings.findOne({_id: new ObjectId(id)});
+        if (!oldRating) return;
 
         let updateDoc = {
             $set: {},
         }
 
-        if (rate.movieTitle_rate) updateDoc.$set.movieTitle_rate = rate.movieTitle_rate;
-        if (rate.rate)  updateDoc.$set.rate  = rate.rate;
+        if (rating.movieTitleRate) updateDoc.$set.movieTitleRate = rating.movieTitleRate;
+        if (rating.rate)  updateDoc.$set.rate  = rating.rate;
 
         await this._ratings.updateOne({_id: new ObjectId(id)}, updateDoc);
         return this._ratings.findOne({_id: new ObjectId(id)});

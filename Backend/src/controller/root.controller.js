@@ -38,8 +38,13 @@ export default class RootController {
             },
             {
                 _name: "rating",
-                query: {url: "/rating", method: "GET", query_params: ["search", "movieTitle_rate", "rate"]},
+                query: {url: "/rating", method: "GET", query_params: ["search", "movieTitleRate", "rate"]},
                 create: {url: "/rating", method: "POST"},
+            },
+            {
+                _name: "reservation",
+                query: {url: "/reservation", method: "GET", query_params: ["search", "movieTitle_reserv", "rate"]},
+                create: {url: "/reservation", method: "POST"},
             }
         ]);
 

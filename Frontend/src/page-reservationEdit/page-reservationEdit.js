@@ -1,13 +1,14 @@
 "use strict";
 
+import { Hmac } from "crypto";
 import Page from "../page.js";
-import HtmlTemplate from "./page-edit.html";
+import HtmlTemplate from "./page-reservationEdit.html";
 
 /**
  * Klasse PageEdit: Stellt die Seite zum Anlegen oder Bearbeiten einer Adresse
  * zur Verfügung.
  */
-export default class PageEditMovie extends Page {
+export default class PageEditReservation extends Page {
     /**
      * Konstruktor.
      *
@@ -21,17 +22,19 @@ export default class PageEditMovie extends Page {
         this._editId = editId;
 
         this._dataset = {
-            movieTitle: "",
-            reggiseur: "",
-            releaseDate: "",
-            playtime: "",
+            firstName: "",
+            secondName: "",
+            email: "",
+            movieTitle_reserv: "",
+            date:"",
         };
 
         // Eingabefelder
-        this._movieTitleInput = null;
-        this._reggiseur = null;
-        this._releaseDateInput     = null;
-        this._playtimeInput     = null;
+        this._firstNameInput = null;
+        this._secondNameInput = null;
+        this._emailInput     = null;
+        this._movieTitle_reservInput     = null;
+        this._dateInput = null;
     }
 
     /**
@@ -55,20 +58,21 @@ export default class PageEditMovie extends Page {
 
         // Bearbeiteten Datensatz laden
         if (this._editId) {
-            this._url = `/movie/${this._editId}`;
+            this._url = `/reservation/${this._editId}`;
             this._dataset = await this._app.backend.fetch("GET", this._url);
             this._title = `${this._dataset.movieTitle}`;
         } else {
-            this._url = `/movie`;
-            this._title = "Film hinzufügen";
+            this._url = `/reservation`;
+            this._title = "Reservierung hinzufügen";
         }
 
         // Platzhalter im HTML-Code ersetzen
         let html = this._mainElement.innerHTML;
-        html = html.replace("$MOVIETITLE$", this._dataset.movieTitle);
-        html = html.replace("$REGGISEUR$", this._dataset.reggiseur);
-        html = html.replace("$RELEASEDATE$", this._dataset.releaseDate);
-        html = html.replace("$PLAYTIME$", this._dataset.playtime);
+        html = html.replace("$FIRSTNAME$", this._dataset.firstName);
+        html = html.replace("$SECONDNAME$", this._dataset.secondName);
+        html = html.replace("$EMAIL$", this._dataset.email);
+        html = html.replace("$MOVIETITLE_RESERV$", this._dataset.movieTitle_reserv);
+        html = html.replace("$DATE$", this._dataset.date);
         this._mainElement.innerHTML = html;
 
         // Event Listener registrieren
@@ -76,10 +80,11 @@ export default class PageEditMovie extends Page {
         saveButton.addEventListener("click", () => this._saveAndExit());
 
         // Eingabefelder zur späteren Verwendung merken
-        this._movieTitleInput = this._mainElement.querySelector("input.movieTitle");
-        this._reggiseur = this.mainElement.querySelector("input.reggiseur");
-        this._releaseDateInput     = this._mainElement.querySelector("input.releaseDate");
-        this._playtimeInput     = this._mainElement.querySelector("input.playtime");
+        this._firstNameInput                = this._mainElement.querySelector("input.firstName");
+        this._secondNameInput               = this._mainElement.querySelector("input.secondName");
+        this._emailInput                    = this._mainElement.querySelector("input.email");
+        this._movieTitle_reservInput        = this._mainElement.querySelector("input.movieTitle_reserv");
+        this._dateInput                     = this._mainElement.querySelector("input.date");
     }
 
     /**
@@ -111,6 +116,6 @@ export default class PageEditMovie extends Page {
         }
 
         // Zurück zur Übersicht
-        location.hash = "#/";
+        location.hash = "#/reservation";
     }
 };

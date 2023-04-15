@@ -29,7 +29,7 @@ export default class PageEditMovie extends Page {
 
         // Eingabefelder
         this._movieTitleInput = null;
-        this._reggiseur = null;
+        this._reggiseurInput = null;
         this._releaseDateInput     = null;
         this._playtimeInput     = null;
     }
@@ -77,7 +77,7 @@ export default class PageEditMovie extends Page {
 
         // Eingabefelder zur späteren Verwendung merken
         this._movieTitleInput = this._mainElement.querySelector("input.movieTitle");
-        this._reggiseur = this.mainElement.querySelector("input.reggiseur");
+        this._reggiseurInput = this.mainElement.querySelector("input.reggiseur");
         this._releaseDateInput     = this._mainElement.querySelector("input.releaseDate");
         this._playtimeInput     = this._mainElement.querySelector("input.playtime");
     }
@@ -90,7 +90,7 @@ export default class PageEditMovie extends Page {
         // Eingegebene Werte prüfen
         this._dataset._id           = this._editId;
         this._dataset.movieTitle    = this._movieTitleInput.value.trim();
-        this._dataset.reggiseur     = this._reggiseur.value.trim();
+        this._dataset.reggiseur     = this._reggiseurInput.value.trim();
         this._dataset.releaseDate   = this._releaseDateInput.value.trim();
         this._dataset.playtime      = this._playtimeInput.value.trim();
 

@@ -8,7 +8,7 @@ info:
   contact:
     name: wadDW
     url: dAWDAS
-    email: muster.mann@gmx.de
+    email: muster.mann@example.de
   license:
     name: CC-BY-4.0
     url: https://creativecommons.org/licenses/by/4.0/deed.de
@@ -18,6 +18,7 @@ servers:
 tags:
 - name: Index
 - name: Adresse
+- name: Rating
 paths:
   /:
     get:
@@ -216,6 +217,170 @@ paths:
           description: OK
         "404":
           description: Not Found
+  
+  /rating:
+    get:
+      tags:
+      - Adresse
+      summary: Bewertung suchen
+      description: Suche nach Bewertung. Gibt eine Liste aller Bewertungen passend zu
+        den übergebenen Suchkriterien zurück.
+      operationId: search-rating
+      parameters:
+      - name: movieTitleRate
+        in: query
+        description: Gesuchte Film
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: rate
+        in: query
+        description: Gesuchte Bewertung
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rating'
+                x-content-type: application/json
+    post:
+      tags:
+      - Adresse
+      summary: Bewertung anlegen
+      description: "Neue Bewertung anlegen. Speichert die übergebenen Bewertung in der\
+        \ Datenbank. Der Wert des Feldes \"_id\" wird dabei ignoriert, da in jedem Fall\
+        \ einen neuen Film mit neuer ID angelegt wird."
+      operationId: create-rating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+
+  /rating/{id}:
+    get:
+      tags:
+      - Adresse
+      summary: Bewertung lesen
+      description: Liest eine einzelne Bewertung vom Server.
+      operationId: get-rating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        "404":
+          description: Not Found
+    put:
+      tags:
+      - Bewertung überschreiben
+      summary: ""
+      description: "Überschreibt eine vorhandene Bewertung auf dem Server. Bis auf die\
+        \ ID können alle Felder geändert werden. Der Versuch, die ID zu ändern, wird\
+        \ vom Server stillschweigend ignoriert."
+      operationId: update-rating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        "404":
+          description: Not Found
+    patch:
+      tags:
+      - Einzelne Felder ändern
+      summary: Einzelne Bewertungsfelder ändern
+      description: "Ändert einzelne Felder einer vorhandenen Bewertung. Zulässig sind\
+        \ alle Felder bis auf die ID, da diese nachträglich nicht mehr verändert werden\
+        \ darf."
+      operationId: patch-rating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        "404":
+          description: Not Found
+    delete:
+      tags:
+      - Adresse
+      summary: Bewertung löschen
+      description: Löscht eine Bewertung auf dem Server.
+      operationId: delete-rating
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
 
 components:
   schemas:
@@ -281,4 +446,25 @@ components:
         reggsieur: "James Camerom"
         releaseDate: "14. Dezember 2022"
         playtime: "3:10"
+
+    Rating:
+      title: Bewertung
+      type: object
+      properties:
+        _links:
+          $ref: '#/components/schemas/HATEOAS_Resource'
+        _id:
+          type: string
+        movieTitleRate:
+          type: string
+        rate:
+          type: string
+          pattern: "(.*@.*\\..*)?"
+      required:
+        - movieTitleRate
+      example:
+        _id: "82438fh3w32234d"
+        movieTitleRate: "Avatar 2"
+        rate: "Der Film war gut"
   securitySchemes: {}
+

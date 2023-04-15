@@ -1,6 +1,6 @@
 "use strict"
 
-import AddMovieService from "../service/addMovie.service.js";
+import AddReservation from "../service/addReservation.service.js";
 import {wrapHandler} from "../utils.js";
 import RestifyError from "restify-errors";
 
@@ -9,7 +9,7 @@ import RestifyError from "restify-errors";
  * alle notwendigen URL-Handler beim Webserver für einen einfachen REST-
  * Webservice zum Lesen und Schreiben von Adressen.
  */
-export default class AddMovieController {
+export default class AddReservationController {
     /**
      * Konstruktor. Hier werden die URL-Handler registrert.
      *
@@ -17,7 +17,7 @@ export default class AddMovieController {
      * @param {String} prefix Gemeinsamer Prefix aller URLs
      */
     constructor(server, prefix) {
-        this._service = new AddMovieService();
+        this._service = new AddReservation();
         this._prefix = prefix;
 
         // Collection: Adressen
@@ -87,7 +87,7 @@ export default class AddMovieController {
             this._insertHateoasLinks(result);
             res.sendResult(result);
         } else {
-            throw new RestifyError.NotFoundError("Film nicht gefunden");
+            throw new RestifyError.NotFoundError("Reservierung nicht gefunden");
         }
 
         return next();
@@ -105,7 +105,7 @@ export default class AddMovieController {
             this._insertHateoasLinks(result);
             res.sendResult(result);
         } else {
-            throw new RestifyError.NotFoundError("Film nicht gefunden");
+            throw new RestifyError.NotFoundError("Reservierung nicht gefunden");
         }
 
         return next();

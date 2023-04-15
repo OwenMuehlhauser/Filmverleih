@@ -1,12 +1,12 @@
 "use strict";
 
 import Page from "../page.js";
-import HtmlTemplate from "./page-list.html";
+import HtmlTemplate from "./page-reservation.html";
 
 /**
  * Klasse PageList: Stellt die Listenübersicht zur Verfügung
  */
-export default class PageList extends Page {
+export default class PageReservation extends Page {
     /**
      * Konstruktor.
      *
@@ -36,10 +36,10 @@ export default class PageList extends Page {
     async init() {
         // HTML-Inhalt nachladen
         await super.init();
-        this._title = "Übersicht";
+        this._title = "Übersicht Reservierungen";
 
         // Platzhalter anzeigen, wenn noch keine Daten vorhanden sind
-        let data = await this._app.backend.fetch("GET", "/movie");
+        let data = await this._app.backend.fetch("GET", "/reservation");
         this._emptyMessageElement = this._mainElement.querySelector(".empty-placeholder");
 
         if (data.length) {
@@ -59,10 +59,10 @@ export default class PageList extends Page {
             let html = templateHtml;
 
             html = html.replace("$ID$", dataset._id);
-            html = html.replace("$MOVIETITLE$", dataset.movieTitle);
-            html = html.replace("$REGGISEUR$", dataset.reggiseur)
-            html = html.replace("$RELEASEDATE$", dataset.releaseDate);
-            html = html.replace("$PLAYTIME$", dataset.playtime);
+            html = html.replace("$FIRSTNAME$", dataset.firstName);
+            html = html.replace("$SECONDNAME$", dataset.secondName)
+            html = html.replace("$EMAIL$", dataset.email);
+            html = html.replace("$MOVIETITLE_RESERV$", dataset.movieTitle_reserv);
 
             // Element in die Liste einfügen
             let dummyElement = document.createElement("div");
@@ -72,7 +72,7 @@ export default class PageList extends Page {
             olElement.appendChild(liElement);
 
             // Event Handler registrieren
-            liElement.querySelector(".action.edit").addEventListener("click", () => location.hash = `#/edit/${dataset._id}`);
+            liElement.querySelector(".action.edit").addEventListener("click", () => location.hash = `#/editReservation/${dataset._id}`);
             liElement.querySelector(".action.delete").addEventListener("click", () => this._askDelete(dataset._id));
         }
     }
@@ -85,12 +85,12 @@ export default class PageList extends Page {
      */
     async _askDelete(id) {
         // Sicherheitsfrage zeigen
-        let answer = confirm("Soll der ausgewählte Film wirklich gelöscht werden?");
+        let answer = confirm("Soll die ausgewählte Reservierung wirklich gelöscht werden?");
         if (!answer) return;
 
         // Datensatz löschen
         try {
-            this._app.backend.fetch("DELETE", `/movie/${id}`);
+            this._app.backend.fetch("DELETE", `/reservation/${id}`);
         } catch (ex) {
             this._app.showException(ex);
             return;
