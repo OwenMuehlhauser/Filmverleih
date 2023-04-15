@@ -105,4 +105,4 @@ export default class PageReservation extends Page {
             this._emptyMessageElement.classList.remove("hidden");
         }
     }
-};
+}
