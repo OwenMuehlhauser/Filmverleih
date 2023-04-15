@@ -191,6 +191,44 @@ class App {
     }
 
     /**
+     * Seite zum Anlegen einer Reservierung.  Wird vom Single Page
+     * Router aufgerufen.
+     *
+     * 
+     */
+    async _gotoNewReserv() {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageReservation} = await import("./page-reservation/page-reservation.js");
+
+            let page = new PageReservation(this);
+            await page.init();
+            this._showPage(page, "reserve");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+    /**
+     * Seite zum Bearbeiten einer Reservierung anzeigen.  Wird vom Single Page
+     * Router aufgerufen.
+     *
+     * @param {Number} id ID der zu bearbeitenden Bewertung
+     */
+    async _gotoEditReserv(id) {
+        try {
+            // Dynamischer Import, vgl. https://javascript.info/modules-dynamic-imports
+            let {default: PageEditReservation} = await import("./page-reservationEdit/page-reservationEdit.js");
+
+            let page = new PageEditReservation(this, id);
+            await page.init();
+            this._showPage(page, "editReserv");
+        } catch (ex) {
+            this.showException(ex);
+        }
+    }
+
+    /**
      * Interne Methode zum Umschalten der sichtbaren Seite.
      *
      * @param  {Page} page Objekt der anzuzeigenden Seiten
