@@ -47,7 +47,14 @@ class App {
                 url: "^/editRating/(.*)$",
                 show: matches => this._gotoEditRating(matches[1])
             },
-            // Es müssen noch die Sachen für reservation ergänzt werden
+            {
+                url: "^/newReserv/$",
+                show: () => this._gotoNewReserv()
+            },
+            {
+                url: "^/editReserv(.*)$",
+                show: matches => this._gotoEditReserv(matches[1])
+            },
             {
                 url: ".*",
                 show: () => this._gotoList()
